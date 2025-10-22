@@ -41,8 +41,16 @@ def git_sync(commit_msg="auto sync"):
     except subprocess.CalledProcessError as e:
         print(f"⚠️ Erreur Git : {e}")
 
+def git_pull():
+    try:
+        subprocess.run(["git", "-C", REPO_PATH, "pull"], check=True)
+        print("✅ Git pulled successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"⚠️ Error during git pull: {e}")
+
 @bot.command()
 async def balls(ctx):
+    git_pull()
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     folder_name = f"{timestamp}_{ctx.author.name}_ballfight"
     folder_path = os.path.join(PENDING_PATH, folder_name)
