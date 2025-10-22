@@ -32,6 +32,8 @@ async def on_ready():
 
 def git_sync(commit_msg="auto sync"):
     try:
+        subprocess.run(["git", "config", "user.email", "thomaslarosemasson@gmail.com"], check=True)
+        subprocess.run(["git", "config", "user.name", "BallBot"], check=True)
         subprocess.run(["git", "-C", REPO_PATH, "add", "."], check=True)
         subprocess.run(["git", "-C", REPO_PATH, "commit", "-m", commit_msg], check=True)
         subprocess.run(["git", "-C", REPO_PATH, "push"], check=True)
