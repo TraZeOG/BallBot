@@ -1,20 +1,20 @@
 from datetime import datetime
 from discord.ext import commands
 import discord
-from discord.ext import commands
 import io, os, shutil
 from PIL import Image
 import requests
 import aiohttp
 
-BASE_PATH = "C:\\Users\\thoma\Code\Python\Discord bot\\requests"
+BASE_PATH = os.path.join(os.getcwd(), "requests")
 PENDING_PATH = os.path.join(BASE_PATH, "pending")
 ACCEPTED_PATH = os.path.join(BASE_PATH, "accepted")
 os.makedirs(PENDING_PATH, exist_ok=True)
 os.makedirs(ACCEPTED_PATH, exist_ok=True)
-TOKEN = "MTQyOTA2MzcwMDQ4NDE5NDMxNA.GyhWUF.6APVTCv3kJWaRw4qv4FV8S6pCvDDQzlk0T2KuQ"
-REVIEW_CHANNEL_ID = 1429486591440588993
-RESULT_CHANNEL_ID = 1429744076714016829
+
+TOKEN = os.environ.get("DISCORD_TOKEN")
+REVIEW_CHANNEL_ID = int(os.environ.get("REVIEW_CHANNEL_ID", "1429486591440588993"))
+RESULT_CHANNEL_ID = int(os.environ.get("RESULT_CHANNEL_ID", "1429744076714016829"))
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -128,4 +128,10 @@ async def on_reaction_add(reaction, user):
 
     del bot.review_messages[message.id]
 
-bot.run(TOKEN)
+if __name__ == "__main__":
+    if not TOKEN:
+        print("Error: DISCORD_TOKEN environment variable is not set!")
+        print("Please set the DISCORD_TOKEN secret in your Replit environment.")
+        exit(1)
+    
+    bot.run(TOKEN)
