@@ -9,7 +9,7 @@ import os
 import subprocess
 
 BASE_PATH = os.path.join(os.getcwd(), "requests")
-REPO_PATH = "C:\\Users\\thoma\\Code\\DiscordBot"
+REPO_PATH = os.getcwd()
 PENDING_PATH = os.path.join(BASE_PATH, "pending")
 ACCEPTED_PATH = os.path.join(BASE_PATH, "accepted")
 os.makedirs(PENDING_PATH, exist_ok=True)
