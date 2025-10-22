@@ -5,8 +5,11 @@ import io, os, shutil
 from PIL import Image
 import requests
 import aiohttp
+import os
+import subprocess
 
 BASE_PATH = os.path.join(os.getcwd(), "requests")
+REPO_PATH = "C:\\Users\\thoma\\Code\\DiscordBot"
 PENDING_PATH = os.path.join(BASE_PATH, "pending")
 ACCEPTED_PATH = os.path.join(BASE_PATH, "accepted")
 os.makedirs(PENDING_PATH, exist_ok=True)
@@ -26,6 +29,15 @@ bot.review_messages = {}
 @bot.event
 async def on_ready():
     print(f"Connected as {bot.user}")
+
+def git_sync(commit_msg="auto sync"):
+    try:
+        subprocess.run(["git", "-C", REPO_PATH, "add", "."], check=True)
+        subprocess.run(["git", "-C", REPO_PATH, "commit", "-m", commit_msg], check=True)
+        subprocess.run(["git", "-C", REPO_PATH, "push"], check=True)
+        print("✅ Git synchronized.")
+    except subprocess.CalledProcessError as e:
+        print(f"⚠️ Erreur Git : {e}")
 
 @bot.command()
 async def balls(ctx):
@@ -113,6 +125,9 @@ async def on_reaction_add(reaction, user):
                 description=f"{author.mention}, your request has been accepted!\nParticipating: {', '.join(m.mention for m in mentions)}\n,Your video will be created soon!"
             )
             await result_channel.send(embed=embed)
+            
+            git_sync(commit_msg=f"Auto commit: création {folder_name}")
+            
         except Exception as e:
             await message.channel.send(f"⚠️ Error while moving: `{e}`")
         
