@@ -75,7 +75,6 @@ async def ballfight(ctx):
 
             avatar_path = os.path.join(folder_path, f"{member.name}.png")
             img.save(avatar_path, format="PNG")
-
             files.append(discord.File(avatar_path, filename=f"profil_{i}.png"))
         except Exception as e:
             print(f"Error with user {member}: {e}")
