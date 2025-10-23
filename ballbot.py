@@ -49,7 +49,7 @@ def git_pull():
         print(f"⚠️ Error during git pull: {e}")
 
 @bot.command()
-async def balls(ctx):
+async def ballfight(ctx):
     git_pull()
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     folder_name = f"{timestamp}_{ctx.author.name}_ballfight"
@@ -98,7 +98,7 @@ async def balls(ctx):
     await review_message.add_reaction("✅")
     await review_message.add_reaction("❌")
 
-    await ctx.send(f"✅ {len(files)} sent for review :D")
+    await ctx.send(f"✅ Request sent for review!")
 
     bot.review_messages[review_message.id] = {
         "author": ctx.author,
@@ -141,7 +141,6 @@ async def on_reaction_add(reaction, user):
         except Exception as e:
             await message.channel.send(f"⚠️ Error while moving: `{e}`")
         
-
     elif reaction.emoji == "❌":
         try:
             shutil.rmtree(folder_path)
@@ -156,7 +155,7 @@ async def on_reaction_add(reaction, user):
 if __name__ == "__main__":
     if not TOKEN:
         print("Error: DISCORD_TOKEN environment variable is not set!")
-        print("Please set the DISCORD_TOKEN secret in your Replit environment.")
+        print("Please set the DISCORD_TOKEN secret in the Replit environment.")
         exit(1)
     
     bot.run(TOKEN)
